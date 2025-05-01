@@ -1,0 +1,76 @@
+{
+  "project_info": {
+    "project_number": "1097929083749",
+    "project_id": "fleetgo-c76c3",
+    "storage_bucket": "fleetgo-c76c3.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1097929083749:android:34b6d6f9c48a3b8bca2f8c",
+        "android_client_info": {
+          "package_name": "com.example.fleetgo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1097929083749-hfevtcmp5chr4si1d9n50qo1me305p45.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.fleetgo",
+            "certificate_hash": "0903f908330be7013d87c6ecad14a25bf9e07132"
+          }
+        },
+        {
+          "client_id": "1097929083749-ntmn8mu7kl1g7rsla2e5u52iu7dvedpr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDiv1_aJ_AD1LsoKjtuYHp6bFj36dWewug"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1097929083749-ntmn8mu7kl1g7rsla2e5u52iu7dvedpr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1097929083749:android:5de65d3bd605cedbca2f8c",
+        "android_client_info": {
+          "package_name": "com.example.fleetgo_drivers"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1097929083749-ntmn8mu7kl1g7rsla2e5u52iu7dvedpr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDiv1_aJ_AD1LsoKjtuYHp6bFj36dWewug"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1097929083749-ntmn8mu7kl1g7rsla2e5u52iu7dvedpr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
