@@ -38,7 +38,6 @@ class _SignupState extends State<Signup> {
     usernameController.dispose();
     numberController.dispose();
     emailController.dispose();
-
     passwordController.dispose();
     confirmPassController.dispose();
     super.dispose();
@@ -50,6 +49,16 @@ class _SignupState extends State<Signup> {
   @override
   Widget build(BuildContext context) {
     context.read<SmsEmailCheckBoxBloc>().add(SelectSmsEvent());
+
+    // Reset password visibility when form is loaded
+    String signupPasswordFieldId = 'signup_password';
+    String signupConfirmPasswordFieldId = 'signup_confirm_password';
+    context
+        .read<PasswordVisibilityBloc>()
+        .add(ResetPasswordVisibility(signupPasswordFieldId));
+    context
+        .read<PasswordVisibilityBloc>()
+        .add(ResetPasswordVisibility(signupConfirmPasswordFieldId));
 
     final formFields = signupFormFields(
       usernameController: usernameController,
@@ -89,27 +98,32 @@ class _SignupState extends State<Signup> {
               key: formKey,
               child: Column(
                 children: formFields.map((field) {
-                  if (field.containsKey('index')) {
+                  if (field.containsKey('id')) {
                     return BlocBuilder<PasswordVisibilityBloc,
                         PasswordVisibilityChange>(
                       builder: (context, state) {
-                        int index = field['index'];
+                        String fieldId = field['id'];
+
                         return InputBox(
                           iconSuffix: GestureDetector(
                             onTap: () => context
                                 .read<PasswordVisibilityBloc>()
-                                .add(TogglePasswordVisibility(index)),
+                                .add(TogglePasswordVisibility(fieldId)),
                             child: Icon(
-                              state.isObscureList[index]
-                                  ? Icons.visibility_off
-                                  : Icons.visibility,
+                              context
+                                      .read<PasswordVisibilityBloc>()
+                                      .isFieldVisible(fieldId)
+                                  ? Icons.visibility
+                                  : Icons.visibility_off,
                               size: 15,
                             ),
                           ),
                           iconPrefix: field['prefixIcon'],
                           keyboard: field['keyBoard'],
                           validator: field['validator'],
-                          obscureText: state.isObscureList[index],
+                          obscureText: !context
+                              .read<PasswordVisibilityBloc>()
+                              .isFieldVisible(fieldId),
                           textController: field['controller'],
                           hintText: field['hintText'],
                           prefixText: field['prefixText'],
@@ -158,9 +172,11 @@ class _SignupState extends State<Signup> {
                               final random = math.Random();
                               otp = 100000 + random.nextInt(900000);
 
-                              context.read<EmailVerificationBloc>().add(
-                                  VerifyEmail(
-                                      otp: otp, email: emailController.text));
+                              context.read<EmailVerificationBloc>().add(VerifyEmail(
+                                  otp: otp,
+                                  email: emailController.text,
+                                  message:
+                                      'Please enter this code to complete your verification process.'));
                               Navigator.of(context)
                                   .pushReplacement(MaterialPageRoute(
                                       builder: (ctx) => OtpVerification(

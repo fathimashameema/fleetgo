@@ -161,4 +161,96 @@ class FirestoreUserRepository extends FirestoreRepo {
       return 'Error: ${e.toString()}';
     }
   }
+
+  @override
+  Future<String?> getEmailWithName(String username) async {
+    try {
+      final query = await _firestoreInstance
+          .collection('user')
+          .where('name', isEqualTo: username)
+          .limit(1)
+          .get();
+
+      if (query.docs.isEmpty) return null;
+      return query.docs.first.data()['email'];
+    } catch (e) {
+      log(e.toString());
+      rethrow;
+    }
+  }
+
+  @override
+  Future<String?> getUserId(String identifiers) async {
+    try {
+      if (RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$')
+          .hasMatch(identifiers)) {
+        final query = await _firestoreInstance
+            .collection('user')
+            .where('email', isEqualTo: identifiers)
+            .limit(1)
+            .get();
+        return query.docs.isNotEmpty ? query.docs.first.id : null;
+      } else if (RegExp(r'^[0-9]{10}$').hasMatch(identifiers)) {
+        final query = await _firestoreInstance
+            .collection('user')
+            .where('number', isEqualTo: identifiers)
+            .limit(1)
+            .get();
+        return query.docs.isNotEmpty ? query.docs.first.id : null;
+      } else {
+        final query = await _firestoreInstance
+            .collection('user')
+            .where('name', isEqualTo: identifiers)
+            .limit(1)
+            .get();
+        return query.docs.isNotEmpty ? query.docs.first.id : null;
+      }
+    } catch (e) {
+      log(e.toString());
+      rethrow;
+    }
+  }
+
+  @override
+  Future<void> updatePassword(String newPassword, String userId) async {
+    try {
+      await userCollection.doc(userId).update({'password': newPassword});
+      log('updated password ${userCollection.doc(userId).get()}');
+    } catch (e) {
+      log(e.toString());
+      rethrow;
+    }
+  }
+
+  @override
+  Future<String?> getPassword(String id) async {
+    try {
+      final query = await _firestoreInstance.collection('user').doc(id).get();
+
+      if (query.exists) {
+        final data = query.data();
+        return data?['password'] as String?;
+      }
+      return null;
+    } catch (e) {
+      log('Error retrieving password: $e');
+      rethrow;
+    }
+  }
+
+  @override
+  Future<String?> getEmailById(String id) async {
+    try {
+      final query = await _firestoreInstance.collection('user').doc(id).get();
+
+      if (query.exists) {
+        final data = query.data();
+        return data?['email'] as String?;
+      }
+      return null;
+    } catch (e) {
+      log('Error retrieving email: $e');
+      rethrow;
+    }
+  }
 }

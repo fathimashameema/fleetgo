@@ -12,10 +12,10 @@ class UsersBloc extends Bloc<UsersEvent, UsersState> {
   final UserRepo _userRepo;
   final FirestoreRepo _firestoreRepo;
   UsersBloc(
-      {required UserRepo myUserRepository,
-      required FirestoreRepo myFirestoreRepository})
-      : _userRepo = myUserRepository,
-        _firestoreRepo = myFirestoreRepository,
+      {required UserRepo userRepository,
+      required FirestoreRepo firestoreRepository})
+      : _userRepo = userRepository,
+        _firestoreRepo = firestoreRepository,
         super(const UsersState.loading()) {
     on<GetMyUser>((event, emit) async {
       try {

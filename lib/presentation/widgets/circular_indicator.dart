@@ -1,14 +1,17 @@
+import 'package:fleetgo/resources/colors/colors.dart';
 import 'package:flutter/material.dart';
 
 class CircularIndicator extends StatelessWidget {
-  const CircularIndicator({super.key});
+  final Color? color;
+  const CircularIndicator({super.key, this.color});
 
   @override
   Widget build(BuildContext context) {
-    return const SizedBox(
+    return SizedBox(
         width: 20,
         height: 20,
         child: CircularProgressIndicator(
+          color: color ?? TColors.textWhite,
           strokeWidth: 1,
         ));
   }

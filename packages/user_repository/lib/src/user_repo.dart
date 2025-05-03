@@ -4,10 +4,10 @@ import 'package:user_repository/src/models/models.dart';
 abstract class UserRepo {
   Stream<User?> get user;
   Future<MyUser> signUpWithEmail(MyUser user, String password);
-  Future<void> signUpWithPhone(String phone);
+  Future<void> verifyPhone(String phone);
   Future<MyUser> signInWithGoogle();
-  Future<void> verifyEmail(String email, int otp);
-  Future<MyUser> verifyPhone(MyUser myUser, String smsOtp);
+  Future<void> verifyEmail(String email, int otpc, String message);
+  Future<MyUser> signUpWithPhone(MyUser myUser, String smsOtp);
   Future<String?> signInWithEmail(String email, String password);
   Future<String?> signInWithNumber(String phoneNo, String password);
   Future<String?> signInWithUsername(String username, String password);
@@ -15,4 +15,7 @@ abstract class UserRepo {
 
   Future<void> logoOut();
   Future<void> resetPassword(String email);
+  // Future<void> verifyPhoneForPasswordReset(String phone);
+  Future<bool> verifySmsCodeForReset(String smsCode);
+  Future<void> updatePassword(String userId, String newPassword);
 }

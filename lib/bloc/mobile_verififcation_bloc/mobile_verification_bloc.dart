@@ -17,7 +17,7 @@ class MobileVerificationBloc
     on<VerifyPhone>((event, emit) async {
       emit(MobileVerificationLoading());
       try {
-        await _userRepository.signUpWithPhone(event.phone);
+        await _userRepository.verifyPhone(event.phone);
         emit(MobileVerificationSuccess());
       } catch (e) {
         log(e.toString());

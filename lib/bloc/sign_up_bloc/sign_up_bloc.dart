@@ -34,7 +34,7 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
     on<SignUpPhone>((event, emit) async {
       emit(SignUpProcess());
       try {
-        final MyUser user = await _userRepository.verifyPhone(
+        final MyUser user = await _userRepository.signUpWithPhone(
           event.user,
           event.smsOtp,
         );
@@ -57,7 +57,5 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
         emit(SignUpFailure());
       }
     });
-
-   
   }
 }

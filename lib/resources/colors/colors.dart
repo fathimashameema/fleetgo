@@ -4,7 +4,7 @@ class TColors {
   TColors._();
   static Color textBlack = Colors.black;
   static Color transparent = Colors.transparent;
-
+  static Color blue = Colors.blue;
   static Color textWhite = Colors.white;
   static Color grey = Colors.grey;
   static Color liightGrey = const Color.fromARGB(255, 213, 212, 212);

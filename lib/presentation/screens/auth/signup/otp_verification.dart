@@ -50,9 +50,11 @@ class _OtpVerificationState extends State<OtpVerification> {
   void _onResendClicked(String mail) {
     final random = Random();
     int otp = 100000 + random.nextInt(900000);
-    context
-        .read<EmailVerificationBloc>()
-        .add(ResentOtp(otp: otp, mailOrPhone: mail));
+    context.read<EmailVerificationBloc>().add(ResentOtp(
+        otp: otp,
+        mailOrPhone: mail,
+        message:
+            'Please enter this code to complete your verification process.'));
   }
 
   void smsOtpResend(String number) {

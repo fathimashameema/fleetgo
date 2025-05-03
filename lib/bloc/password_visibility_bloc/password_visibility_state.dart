@@ -9,9 +9,21 @@ abstract class PasswordVisibilityState extends Equatable {
 
 final class PasswordVisibilityInitial extends PasswordVisibilityState {}
 
-final class PasswordVisibilityChange extends PasswordVisibilityState {
-  final List<bool> isObscureList;
-  const PasswordVisibilityChange({required this.isObscureList});
+class PasswordVisibilityChange extends Equatable {
+  final Map<String, bool> fieldVisibility;
+
+  const PasswordVisibilityChange({
+    required this.fieldVisibility,
+  });
+
+  PasswordVisibilityChange copyWith({
+    Map<String, bool>? fieldVisibility,
+  }) {
+    return PasswordVisibilityChange(
+      fieldVisibility: fieldVisibility ?? this.fieldVisibility,
+    );
+  }
+
   @override
-  List<Object> get props => [isObscureList];
+  List<Object?> get props => [fieldVisibility];
 }

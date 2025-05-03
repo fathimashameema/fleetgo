@@ -12,4 +12,10 @@ abstract class FirestoreRepo {
   Future<bool> isPhoneExit(String phone);
   Future<String> getUserWithNumber(String phoneNo, String password);
   Future<String> getUserWithname(String username, String password);
+  Future<String?> getEmailWithName(String username);
+  Future<String?> getPassword(String id);
+  Future<String?> getEmailById(String id);
+  
+  Future<void> updatePassword(String newPassword, String userId);
+  Future<String?> getUserId(String identifiers);
 }

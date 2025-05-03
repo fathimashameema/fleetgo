@@ -1,3 +1,4 @@
+import 'package:fleetgo/presentation/screens/auth/login/login.dart';
 import 'package:fleetgo/resources/images/images.dart';
 import 'package:flutter/material.dart';
 
@@ -7,6 +8,11 @@ class PasswordChanged extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
+    Future.delayed(const Duration(seconds: 3), () {
+      if (!context.mounted) return;
+      Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(builder: (ctx) => const Login()), (route) => false);
+    });
     return Scaffold(
       body: Align(
         alignment: Alignment.center,

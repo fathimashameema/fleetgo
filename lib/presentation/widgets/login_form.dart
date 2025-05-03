@@ -15,8 +15,14 @@ class LoginForm extends StatelessWidget {
   final TextEditingController identifierController;
   final TextEditingController passwordController;
 
+  static const String loginPasswordFieldId = 'login_password';
+
   @override
   Widget build(BuildContext context) {
+    context
+        .read<PasswordVisibilityBloc>()
+        .add(const ResetPasswordVisibility(loginPasswordFieldId));
+
     return Form(
       key: formKey,
       child: Column(
@@ -33,7 +39,6 @@ class LoginForm extends StatelessWidget {
               textController: identifierController),
           BlocBuilder<PasswordVisibilityBloc, PasswordVisibilityChange>(
             builder: (context, state) {
-              int index = 0;
               return InputBox(
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -41,17 +46,20 @@ class LoginForm extends StatelessWidget {
                   }
                   return null;
                 },
-                obscureText: state.isObscureList[index],
+                obscureText: !context
+                    .read<PasswordVisibilityBloc>()
+                    .isFieldVisible(loginPasswordFieldId),
                 hintText: 'Password',
                 textController: passwordController,
                 iconSuffix: GestureDetector(
-                  onTap: () => context
-                      .read<PasswordVisibilityBloc>()
-                      .add(TogglePasswordVisibility(index)),
+                  onTap: () => context.read<PasswordVisibilityBloc>().add(
+                      const TogglePasswordVisibility(loginPasswordFieldId)),
                   child: Icon(
-                    state.isObscureList[index]
-                        ? Icons.visibility_off
-                        : Icons.visibility,
+                    context
+                            .read<PasswordVisibilityBloc>()
+                            .isFieldVisible(loginPasswordFieldId)
+                        ? Icons.visibility
+                        : Icons.visibility_off,
                     size: 15,
                   ),
                 ),

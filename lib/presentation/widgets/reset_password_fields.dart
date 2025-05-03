@@ -11,6 +11,7 @@ class ResetPasswordFields extends StatelessWidget {
     required this.alternative,
     required this.mailOrSms,
     required this.navigateTo,
+    this.keyboardType,
   });
 
   final TextEditingController usernameController;
@@ -19,12 +20,17 @@ class ResetPasswordFields extends StatelessWidget {
   final String alternative;
   final String mailOrSms;
   final Widget navigateTo;
+  final TextInputType? keyboardType;
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        InputBox(hintText: hintText, textController: usernameController),
+        InputBox(
+          hintText: hintText,
+          textController: usernameController,
+          keyboard: keyboardType,
+        ),
         Align(
           alignment: Alignment.centerLeft,
           child: Padding(

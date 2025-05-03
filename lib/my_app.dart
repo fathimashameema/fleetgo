@@ -1,5 +1,6 @@
 import 'package:fleetgo/bloc/authentication_bloc/authentication_bloc.dart';
 import 'package:fleetgo/bloc/email_verification_bloc/email_verification_bloc.dart';
+import 'package:fleetgo/bloc/forgot_password_bloc/forgot_password_bloc.dart';
 import 'package:fleetgo/bloc/mobile_verififcation_bloc/mobile_verification_bloc.dart';
 import 'package:fleetgo/bloc/navigate_home_bloc/navigate_home_bloc.dart';
 import 'package:fleetgo/bloc/password_visibility_bloc/password_visibility_bloc.dart';
@@ -41,11 +42,11 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => UsersBloc(
-              myUserRepository: userRepository,
-              myFirestoreRepository: firestoreRepository),
+              userRepository: userRepository,
+              firestoreRepository: firestoreRepository),
         ),
         BlocProvider(
-          create: (context) => PasswordVisibilityBloc(fieldCount: 2),
+          create: (context) => PasswordVisibilityBloc(),
         ),
         BlocProvider(
           create: (context) => EmailVerificationBloc(
@@ -66,6 +67,11 @@ class MyApp extends StatelessWidget {
           create: (context) => IsUserExistBloc(
             firestoreRepository: firestoreRepository,
           ),
+        ),
+        BlocProvider(
+          create: (context) => ForgotPasswordBloc(
+              userRepository: userRepository,
+              firestoreRepo: firestoreRepository),
         ),
       ],
       child: MaterialApp(

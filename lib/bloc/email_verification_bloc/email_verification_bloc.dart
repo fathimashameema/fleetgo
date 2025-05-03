@@ -37,7 +37,8 @@ class EmailVerificationBloc
 
     on<ResentOtp>((event, emit) async {
       try {
-        await _userRepo.verifyEmail(event.mailOrPhone, event.otp);
+        await _userRepo.verifyEmail(
+            event.mailOrPhone, event.otp, event.message);
 
         await _firestoreRepo.resetOtp(event.mailOrPhone, event.otp);
 
@@ -51,7 +52,7 @@ class EmailVerificationBloc
 
     on<VerifyEmail>((event, emit) async {
       try {
-        await _userRepo.verifyEmail(event.email, event.otp);
+        await _userRepo.verifyEmail(event.email, event.otp, event.message);
         await _firestoreRepo.setOtp(
           event.otp,
           event.email,

@@ -12,9 +12,9 @@ List<Map<String, dynamic>> signupFormFields({
   return [
     {
       'controller': usernameController,
-      'hintText': 'User name', 
+      'hintText': 'User name',
       'keyBoard': TextInputType.name,
-      'obscureText': false, 
+      'obscureText': false,
       'validator': (value) {
         if (value == null || value.isEmpty) {
           return 'Please enter User name';
@@ -66,7 +66,7 @@ List<Map<String, dynamic>> signupFormFields({
       'onChanged': onUserChange
     },
     {
-      'index': 0,
+      'id': 'signup_password',
       'controller': passwordController,
       'hintText': 'Password',
       'keyBoard': TextInputType.visiblePassword,
@@ -91,7 +91,7 @@ List<Map<String, dynamic>> signupFormFields({
       'onChanged': (value) {}
     },
     {
-      'index': 1,
+      'id': 'signup_confirm_password',
       'controller': confirmPassController,
       'hintText': 'Confirm password',
       'keyBoard': TextInputType.visiblePassword,

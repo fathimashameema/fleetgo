@@ -1,6 +1,5 @@
 import 'dart:developer';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:mailer/mailer.dart';
@@ -12,7 +11,6 @@ class FirebaseUserRepository implements UserRepo {
     FirebaseAuth? firebaseAuth,
   }) : _firebaseAuth = firebaseAuth ?? FirebaseAuth.instance;
   final FirebaseAuth _firebaseAuth;
-  final userCollection = FirebaseFirestore.instance.collection('user');
   String storedVerificationId = '';
   FirestoreRepo firestoreRepo = FirestoreUserRepository();
 
@@ -41,7 +39,7 @@ class FirebaseUserRepository implements UserRepo {
   }
 
   @override
-  Future<void> verifyEmail(String email, int otp) async {
+  Future<void> verifyEmail(String email, int otp, String message) async {
     final smtpServer = gmail("fleetgo.rides@gmail.com", "gkcr fmhl hwgr ojvn");
 
     log(email);
@@ -77,7 +75,7 @@ class FirebaseUserRepository implements UserRepo {
   }
 
   @override
-  Future<void> signUpWithPhone(
+  Future<void> verifyPhone(
     String phone,
   ) async {
     try {
@@ -85,14 +83,11 @@ class FirebaseUserRepository implements UserRepo {
 
       await _firebaseAuth.verifyPhoneNumber(
         phoneNumber: phone,
-        verificationCompleted: (phoneAuthCredential) async {
-          // await _firebaseAuth.signInWithCredential(phoneAuthCredential);
-        },
+        verificationCompleted: (phoneAuthCredential) async {},
         verificationFailed: (error) {
           log('Verification failed: ${error.message}');
         },
         codeSent: (verificationId, forceResendingToken) {
-          // navigate(verificationId);
           storedVerificationId = verificationId;
           log('otp sent : $verificationId');
         },
@@ -108,7 +103,7 @@ class FirebaseUserRepository implements UserRepo {
   }
 
   @override
-  Future<MyUser> verifyPhone(MyUser myUser, String smsOtp) async {
+  Future<MyUser> signUpWithPhone(MyUser myUser, String smsOtp) async {
     try {
       final cred = await _firebaseAuth.signInWithCredential(
           PhoneAuthProvider.credential(
@@ -253,6 +248,46 @@ class FirebaseUserRepository implements UserRepo {
       await _firebaseAuth.sendPasswordResetEmail(email: email);
     } catch (e) {
       log(e.toString());
+      rethrow;
+    }
+  }
+
+  @override
+  Future<bool> verifySmsCodeForReset(String smsCode) async {
+    try {
+      final credential = PhoneAuthProvider.credential(
+        verificationId: storedVerificationId,
+        smsCode: smsCode,
+      );
+      await _firebaseAuth.signInWithCredential(credential);
+      return true;
+    } catch (e) {
+      log(e.toString());
+      return false;
+    }
+  }
+
+  @override
+  Future<void> updatePassword(String userId, String newPassword) async {
+    try {
+      final user = _firebaseAuth.currentUser;
+      
+      if (user == null) {
+        throw Exception('No user signed in. Please sign in first.');
+      }
+
+      if (user.uid != userId) {
+        throw Exception('Cannot change password for another user');
+      }
+
+      // Update password in Firebase
+      await user.updatePassword(newPassword);
+      
+      // Update password in Firestore
+      await firestoreRepo.updatePassword(newPassword, userId);
+      
+    } catch (e) {
+      log('Password update error: ${e.toString()}');
       rethrow;
     }
   }
